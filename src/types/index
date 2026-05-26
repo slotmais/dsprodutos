@@ -1,0 +1,116 @@
+export interface Cliente {
+  id: string
+  nome: string
+  telefone?: string
+  whatsapp?: string
+  endereco?: string
+  bairro?: string
+  cidade?: string
+  observacoes?: string
+  ativo: boolean
+  criado_em: string
+  atualizado_em: string
+  // computed
+  total_divida?: number
+  ultima_compra?: string
+}
+
+export interface Produto {
+  id: string
+  nome: string
+  descricao?: string
+  preco_custo: number
+  preco_venda: number
+  unidade: string
+  estoque_atual: number
+  estoque_minimo: number
+  ativo: boolean
+  criado_em: string
+  atualizado_em: string
+  margem_lucro?: number
+}
+
+export interface Venda {
+  id: string
+  cliente_id?: string
+  cliente?: Cliente
+  forma_pagamento: 'avista' | 'pix' | 'cartao' | 'fiado'
+  status: 'pago' | 'pendente' | 'atrasado' | 'cancelado'
+  total: number
+  total_custo: number
+  lucro: number
+  desconto: number
+  data_venda: string
+  data_vencimento?: string
+  observacoes?: string
+  itens?: VendaItem[]
+}
+
+export interface VendaItem {
+  id: string
+  venda_id: string
+  produto_id: string
+  produto?: Produto
+  quantidade: number
+  preco_unitario: number
+  preco_custo_unitario: number
+  subtotal: number
+}
+
+export interface Fiado {
+  id: string
+  venda_id?: string
+  cliente_id: string
+  cliente?: Cliente
+  valor_total: number
+  valor_pago: number
+  valor_restante: number
+  data_vencimento: string
+  status: 'pendente' | 'pago' | 'atrasado' | 'parcial'
+  numero_parcelas: number
+  observacoes?: string
+  criado_em: string
+  atualizado_em: string
+  pagamentos?: FiadoPagamento[]
+}
+
+export interface FiadoPagamento {
+  id: string
+  fiado_id: string
+  valor: number
+  forma_pagamento: 'dinheiro' | 'pix' | 'cartao'
+  data_pagamento: string
+  observacoes?: string
+}
+
+export interface Transacao {
+  id: string
+  tipo: 'entrada' | 'saida'
+  categoria: string
+  descricao?: string
+  valor: number
+  data_transacao: string
+  criado_em: string
+}
+
+export interface EstoqueMovimento {
+  id: string
+  produto_id: string
+  produto?: Produto
+  tipo: 'entrada' | 'saida' | 'ajuste'
+  quantidade: number
+  motivo?: string
+  venda_id?: string
+  criado_em: string
+}
+
+export interface DashboardStats {
+  vendas_hoje: number
+  recebido_hoje: number
+  total_fiados: number
+  lucro_mes: number
+  clientes_inadimplentes: number
+  produtos_estoque_baixo: number
+  vencendo_hoje: number
+  vencendo_semana: number
+}
